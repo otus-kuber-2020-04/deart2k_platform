@@ -28,3 +28,49 @@ deart2k Platform repository
     
     Необходимые переменные были добавлены в файле frontend-pod-healthy.yaml
 
+# HW 2
+Был создан ReplicaSet для hipster-frontend. 
+После изменения и применения шаблона ReplicaSet не применил новый шаблон к уже работаюшим подам, они продолжили работать без изменений, используя старый образ.
+После увеличения количества реплик, новые поды были созданы по новому шаблону, т.е. не умеет обновлять поды если изменился шаблон, но применяет изменения для новых контейнеров.
+
+Был содан и опубликован образ для сервиса hipster-paymentservice. Созданы сначала ReplicaSet, а затем deployment с использованием этого образа. 
+Были опыты с изменением  и применением новой конфигурации deployment. Deployment удаляет поды сознынные по старому шаблону и созает новые. При этом для каждого изменения
+создается свой ReplicaSet и изменения можно откатить
+
+### Задание со *
+С использованием параметров maxSurge и maxUnavailable были реализованы два следующих сценария
+
+#1 Аналог blue-green:
+1. Развертывание трех новых pod
+2. Удаление трех старых pod
+
+maxSurge = **100%**
+maxUnavailable = **0**
+
+#2
+
+Reverse Rolling Update:
+1. Удаление одного старого pod
+2. Создание одного нового pod
+и т.д.
+
+maxSurge = **0**
+maxUnavailable = **1**
+
+Созданы paymentservice-deployment-bg.yaml и paymentservice-deployment-reverse.yaml
+
+### Probes
+
+Создан frontend-deployment.yaml в который была добавлена проверка доступности пода с использованием probes.
+
+
+### DaemonSet *
+
+Найден в сети daemonset с node-exporter в который были внесены изменения для на всех нодах кластера.
+
+```
+NAME            DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR            AGE
+node-exporter   6         6         5       0            5           kubernetes.io/os=linux   8m
+
+Проверена доступность метрик после проброса порта  по url localhost:9100/metrics
+
