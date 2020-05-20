@@ -74,3 +74,17 @@ node-exporter   6         6         5       0            5           kubernetes.
 
 Проверена доступность метрик после проброса порта  по url localhost:9100/metrics
 
+
+# HW 3 Security
+
+### task01;
+Были созданы Service Account bob и dave, аккаунту bob была дана роль admin в рамках всего
+кластера
+
+### task02
+Создана Namespace prometheus и  Service Account carol в этом Namespace
+Всем Service Account в Namespace prometheus была выдана возможность делать get, list, watch в отношении Pods всего кластера
+
+### task03
+
+Создан Namespace dev, Service Account-ы jane и ken в этом Namespace, jane выдана роль admin, а  ken роль view в рамках Namespace dev
