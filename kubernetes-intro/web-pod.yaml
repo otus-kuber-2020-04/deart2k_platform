@@ -8,6 +8,12 @@ spec:
   containers: 
   - name: webserver
     image: deart/webserver
+    readinessProbe: # Добавим проверку готовности
+      httpGet: # веб-сервера отдавать
+        path: /index.html # контент
+        port: 801
+    livenessProbe:
+      tcpSocket: { port: 8000 }
     volumeMounts:
     - name: app
       mountPath: /app

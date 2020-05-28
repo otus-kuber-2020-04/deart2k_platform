@@ -88,3 +88,16 @@ node-exporter   6         6         5       0            5           kubernetes.
 ### task03
 
 Создан Namespace dev, Service Account-ы jane и ken в этом Namespace, jane выдана роль admin, а  ken роль view в рамках Namespace dev
+
+# HW 4 networks 
+
+#В процессе сделано:
+
+Добавлены проверки работоспособности в под web .
+Был создан Deployment для запуска web приложения.
+Был создан сервис ClusterIP (kubernetes-networks/web-svc-cip.yaml)
+Включен IPVS в minikube
+Развернут MetalLB
+Создан сервис LoadBalancer для приложения
+Развернут Ingress Nginx
+Приложение опубликовано через ingress http://<ingress_lb_ip>/web
