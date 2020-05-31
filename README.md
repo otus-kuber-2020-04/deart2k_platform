@@ -101,3 +101,10 @@ node-exporter   6         6         5       0            5           kubernetes.
 Создан сервис LoadBalancer для приложения
 Развернут Ingress Nginx
 Приложение опубликовано через ingress http://<ingress_lb_ip>/web
+
+# HW 5 Volumes
+
+
+В процессе выполнения ДЗ:
+- Познакомились с StatefulSet
+- Развернули minio
