@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: echo-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/tls-acme: "true"
+    certmanager.k8s.io/cluster-issuer: "letsencrypt-production"
+    certmanager.k8s.io/acme-challenge-type: http01"
+spec:
+  tls:
+  - hosts:
+    - echo1.deart2k.com
+    - echo2.deart2k.com
+    secretName: echo-tls
+  rules:
+  - host: echo1.deart2k.com
+    http:
+      paths:
+      - backend:
+          serviceName: echo1
+          servicePort: 80
+  - host: echo2.deart2k.com
+    http:
+      paths:
+      - backend:
+          serviceName: echo2
+          servicePort: 80
