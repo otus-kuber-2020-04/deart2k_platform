@@ -73,7 +73,7 @@ NAME            DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECT
 node-exporter   6         6         5       0            5           kubernetes.io/os=linux   8m
 
 Проверена доступность метрик после проброса порта  по url localhost:9100/metrics
-
+```
 
 # HW 3 Security
 
@@ -108,3 +108,83 @@ node-exporter   6         6         5       0            5           kubernetes.
 В процессе выполнения ДЗ:
 - Познакомились с StatefulSet
 - Развернули minio
+
+
+# HW 6 templating
+
+
+Зарегистрировал новую учетную запись в GCP
+Запустил кластер kubernetes в GCP
+
+```
+gcloud container clusters create otus-claster
+``` 
+
+
+Установил Helm3 из snap репозитория
+
+Установил и настроил nginx-ingress, cert-manager, chartmuseum, harbor
+```
+kubectl create ns nginx-ingress
+
+helm upgrade --install nginx-ingress stable/nginx-ingress --wait --namespace=nginx-ingress --version=1.38.0
+
+kubectl create ns cert-manager
+
+helm install   cert-manager jetstack/cert-manager   --namespace cert-manager   --version v0.15.1 --set installCRDs=true
+
+kubectl get pods --namespace cert-manager
+
+kubectl apply -f test-resources.yaml
+
+kubectl describe certificate -n cert-manager-test
+
+kubectl apply -f clusterissuer.yaml
+
+kubectl create ns chartmuseum
+
+helm upgrade --install chartmuseum stable/chartmuseum --wait --namespace=chartmuseum --version=2.3.2 -f kubernetes-templating/chartmuseum/values.yaml
+
+helm ls -n chartmuseum
+
+kubectl get secrets -n chartmuseum
+
+helm repo add harbor https://helm.goharbor.io
+
+helm upgrade --install harbor harbor/harbor --wait --namespace=harbor --version=1.1.2 -f kubernetes-templating/harbor/values.yaml
+```
+
+Создал helm-chart для hipster-shop (kubernetes-templating/hipster-shop)
+```bash
+kubectl create ns hipster-shop
+helm upgrade --install hipster-shop kubernetes-templating/hipster-shop --namespace hipster-shop
+```
+
+Сервис frontend  вынес в отдельный helm-chart, добавил его к зависимостям hipster-shop
+```bash
+helm upgrade --install frontend kubernetes-templating/frontend --namespace hipster-shop
+```
+ Чарт frontend добавлен как зависимость в чарт hipster-shop [Chart.yaml](kubernetes-templating/hipster-shop/Chart.yaml)
+```yaml
+dependencies:
+  - name: frontend
+    version: 0.1.0
+    repository: "file://../frontend"
+```
+
+Вынес сервисы paymentservice и shippingservice для использования в kubecfg, создал service.jsonnet для генерации манифестов для paymentservice и shippingservice
+
+```bash
+kubecfg show kubernetes-templating/kubecfg/services.jsonnet
+kubecfg update kubernetes-templating/kubecfg/services.jsonnet --namespace hipster-shop
+```
+
+Создал service.jsonnet для генерации манифестов для paymentservice и shippingservice и вынес сервис recommendationservice для использования в kustomize, 
+Настроил kustomize для окружений dev и prod
+
+```bash
+kubectl apply -k kubernetes-templating/kustomize/overrides/dev
+kubectl apply -k kubernetes-templating/kustomize/overrides/prod
+```
+
+
