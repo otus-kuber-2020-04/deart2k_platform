@@ -110,8 +110,7 @@ node-exporter   6         6         5       0            5           kubernetes.
 - Развернули minio
 
 
-# HW 6 templating
-
+## HW 6 templating
 
 Зарегистрировал новую учетную запись в GCP
 Запустил кластер kubernetes в GCP
@@ -119,7 +118,6 @@ node-exporter   6         6         5       0            5           kubernetes.
 ```
 gcloud container clusters create otus-claster
 ``` 
-
 
 Установил Helm3 из snap репозитория
 
@@ -187,4 +185,14 @@ kubectl apply -k kubernetes-templating/kustomize/overrides/dev
 kubectl apply -k kubernetes-templating/kustomize/overrides/prod
 ```
 
+
+# HW7
+Создал CustomResourceDefinition и CustomResource (kubernetes-operators\deploy\cr.yml и kubernetes-operators\deploy\crd.yml`)
+В CustomResourceDefinition добавил validation и required
+- применил CR и CRD  в кластер Kubernetes
+  ```bash
+  kubectl apply -f deploy/crd.yml
+  kubectl apply -f deploy/cr.yml
+  ```
+Запустил оператор в кластере Kubernates, проверил работоспособность.
 
