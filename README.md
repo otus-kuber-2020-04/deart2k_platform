@@ -196,3 +196,22 @@ kubectl apply -k kubernetes-templating/kustomize/overrides/prod
   ```
 Запустил оператор в кластере Kubernates, проверил работоспособность.
 
+# HW8 Monitoring
+1. Создал контейнер с nginx с включенным basic_status
+2. Создал манифесты для Deployment, Service и ServiceMonitor
+3. Проверил что мониторинг работает
+
+Запуск:
+
+git clone -b kubernetes-monitoring git@github.com:otus-kuber-2020-04/deart2k_platform.git
+cd deart2k_platform/kubernetes-monitoring
+
+helm upgrade --install prometheus-operator stable/prometheus-operator --create-namespace --namespace monitoring --version 9.3.0
+
+kubectl apply -f deployment.yaml
+kubectl apply -f service.yaml
+kubectl apply -f servicemonitor.yaml
+
+Проверка:
+kubectl port-forward --namespace monitoring $(kubectl get pods  --namespace monitoring --selector=app.kubernetes.io/name=grafana --output=jsonpath="{.items..metadata.name}") 3000
+Пароль по умолчанию: "prom-operator", можно изменить сознанием values.yam
