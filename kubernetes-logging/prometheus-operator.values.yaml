@@ -1,0 +1,27 @@
+alertmanager:
+  alertmanagerSpec:
+    tolerations: &tolerations
+    - key: node-role
+      operator: Equal
+      value: infra
+      effect: NoSchedule
+grafana:
+  additionalDataSources:
+  - name: Loki
+    access: proxy
+    type: loki
+    url: http://loki:3100/
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+    path: /
+    hosts:
+    - grafana.35.197.193.103.xip.io
+  tolerations: *tolerations
+prometheus:
+  prometheusSpec:
+    serviceMonitorSelectorNilUsesHelmValues: false
+    tolerations: *tolerations
+prometheusOperator:
+  tolerations: *tolerations
