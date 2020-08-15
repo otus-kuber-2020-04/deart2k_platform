@@ -215,3 +215,13 @@ kubectl apply -f servicemonitor.yaml
 Проверка:
 kubectl port-forward --namespace monitoring $(kubectl get pods  --namespace monitoring --selector=app.kubernetes.io/name=grafana --output=jsonpath="{.items..metadata.name}") 3000
 Пароль по умолчанию: "prom-operator", можно изменить сознанием values.yam
+
+
+# HW8 Monitoring
+
+1. Создал кластер K8s в GCP и развернул в нем HipsterShop
+2. Установил EFK и  Porometheus operator используя helm
+3. Так же используя helm, установил nginx-ingress и изменил конфигурацию для вывода логов в json
+4. Обновил релизы с учетом доступа к kibana, grafana, prometheus через полученный ip, запустил Fluent Bit
+5. Создал визуализации в kibana и сделал экспорт в файл
+7. Установил и настроил Loki
