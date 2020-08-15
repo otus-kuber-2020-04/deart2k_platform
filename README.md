@@ -217,7 +217,7 @@ kubectl port-forward --namespace monitoring $(kubectl get pods  --namespace moni
 Пароль по умолчанию: "prom-operator", можно изменить сознанием values.yam
 
 
-# HW8 Monitoring
+# HW9 Monitoring
 
 1. Создал кластер K8s в GCP и развернул в нем HipsterShop
 2. Установил EFK и  Porometheus operator используя helm
