@@ -1,0 +1,10 @@
+# Available parameters and their default values for the Vault chart.
+
+server:
+  standalone:
+    enabled: false
+  ha:
+    enabled: true
+ui:
+  enabled: true
+  serviceType: "ClusterIP"
